@@ -4,7 +4,7 @@ return { InfoVersion = 1, -- Dont touch this
 
     ID = "Static", -- A unique id 
     Name = "Static",
-    Description = "Static for BrowserView",
+    Description = "Static server",
     Version = "1.0.0",
 
     Author = {
@@ -16,9 +16,12 @@ return { InfoVersion = 1, -- Dont touch this
 
     Dependencies = {
         Luvit = {
-            "voronianski/utopia",
-            "luvit/http",
-            "creationix/mime"
+            "creationix/weblit",
+            "creationix/coro-spawn",
+            "creationix/mime",
+            "luvit/json",
+            "creationix/base64",
+            "luvit/url"
         },
         Git = {},
         Dua = {}
