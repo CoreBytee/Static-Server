@@ -1,2 +1,4 @@
 
 .TypeWriter/Build/Static.twr
+.TypeWriter/Build/Static-Server.twr
+src/Main/resources/Server.twr

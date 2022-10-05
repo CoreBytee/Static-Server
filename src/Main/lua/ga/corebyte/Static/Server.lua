@@ -4,18 +4,32 @@ return function (Settings)
     Settings.Port = Settings.Port or 80
     Settings.Path = Settings.Path or require("path").resolve("./")
 
-    local App = require('utopia'):new()
-    local Static = Import("ga.corebyte.Static.External.Static")
-    local Path = require("path")
+    local FS = require("fs")
+    local AppData = TypeWriter.ApplicationData .. "/StaticServer/"
+    local ServerExe = AppData .. "/Server.twr"
+    FS.mkdirSync(AppData)
+    FS.writeFileSync(ServerExe, TypeWriter.LoadedPackages["Static"].Resources["/Server.twr"])
 
-    App:use(
-        Static(
-            Path.resolve(Settings.Path) .. "/"
-        )
+    local Server, Error = require("coro-spawn")(
+        TypeWriter.This,
+        {
+            args = {
+                "execute", "--input=" .. ServerExe,
+                "--serverargs=" .. require("base64").encode(require("json").encode(Settings))
+            },
+            stdio = {
+                process.stdin.handle,
+                process.stdout.handle,
+                process.stderr.handle
+            }
+        }
     )
 
-    local Server = App:listen(Settings.Port, Settings.Host)
-    return string.format("http://localhost:%s/", Settings.Port), App, function ()
-        Server:destroy()
+    coroutine.wrap(function ()
+        Server.waitExit()
+    end)()
+
+    return string.format("http://localhost:%s/", Settings.Port), function ()
+        return require("uv").process_kill(Server.handle)
     end
 end
