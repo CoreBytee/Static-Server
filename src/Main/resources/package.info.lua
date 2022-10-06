@@ -20,7 +20,6 @@ return { InfoVersion = 1, -- Dont touch this
             "creationix/coro-spawn",
             "creationix/mime",
             "luvit/json",
-            "creationix/base64",
             "luvit/url"
         },
         Git = {},
