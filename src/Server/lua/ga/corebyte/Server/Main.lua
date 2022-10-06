@@ -1,12 +1,7 @@
 local App = require('weblit-app')
-p("a")
-p(TypeWriter.ArgumentParser:GetArgument("serverargs", "serverargs"))
 local Arguments = require("json").decode(
-    require("base64").decode(
-        TypeWriter.ArgumentParser:GetArgument("serverargs", "serverargs")
-    )
+    TypeWriter.ArgumentParser:GetArgument("serverargs", "serverargs")
 )
-p("b")
 
 App.bind(
     {

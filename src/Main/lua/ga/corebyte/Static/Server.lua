@@ -15,7 +15,7 @@ return function (Settings)
         {
             args = {
                 "execute", "--input=" .. ServerExe,
-                "--serverargs=" .. require("base64").encode(require("json").encode(Settings))
+                "--serverargs=" .. require("json").encode(Settings)
             },
             stdio = {
                 process.stdin.handle,
