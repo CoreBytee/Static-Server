@@ -23,7 +23,6 @@ return function (Root)
             end
 
             if FS.existsSync(ServeUrl) then
-                p(ServeUrl)
                 Response.headers["Content-Type"] = Mimes.getType(ServeUrl)
                 Response.headers["Content-Length"] = Stat.size
                 Response.headers["Cache-Control"] = 'public, max-age=' .. 0
