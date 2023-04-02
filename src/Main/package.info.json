@@ -1,0 +1,27 @@
+{
+	"Id": "Static",
+	"Name": "Static Server",
+	"Description": "An resource server for typewriter",
+	"Version": "2.0.0",
+	"Authors": {
+		"Developers": [
+			"CoreByte"
+		],
+		"Contributors": []
+	},
+	"Contact": {
+		"Website": "",
+		"Source": "",
+		"Socials": {}
+	},
+	"Dependencies": [
+		{
+			"Source": "NPM",
+			"Package": "express",
+			"Version": "4.18.2"
+		}
+	],
+	"Entrypoints": {
+		"Main": "me.corebyte.static.Test"
+	}
+}
