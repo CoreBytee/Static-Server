@@ -1,1 +1,0 @@
-return Import("ga.corebyte.Static.Server")
