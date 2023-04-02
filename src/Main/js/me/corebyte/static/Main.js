@@ -43,5 +43,10 @@ module.exports = function (Port, PackageId, ResourcePrefix="", Backup) {
             return Response.status(404).send('Requested resource not found');
         }
     )
-    return Server;
+    return {
+        Close: function () {
+            Server.close();
+        },
+        App: App
+    }
 }
