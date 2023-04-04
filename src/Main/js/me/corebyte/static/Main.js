@@ -17,21 +17,19 @@ module.exports = function (Port, PackageId, ResourcePrefix, Backup) {
             if (Request.method != 'GET') {
                 return Response.status(405).send('Method Not Allowed');
             }
-            console.log('Request: ' + Request.url);
             var ResourcePath = [...ResourcePrefix.split("/"), ...Request.path.split("/")].join("/").replaceAll("//", "/")
-            console.log(ResourcePath)
             if (ResourcePath.endsWith("/")) {
                 ResourcePath = ResourcePath.substring(0, ResourcePath.length - 1)
             }
             if (!ResourcePath.startsWith("/")) {
                 ResourcePath = "/" + ResourcePath
             }
-            console.log(ResourcePath)
-            console.log(ResourcePath + ".html")
-            console.log(ResourcePath + "/index.html")
-            console.log(TypeWriter.ResourceManager.ResourceExists(PackageId, ResourcePath))
-            console.log(TypeWriter.ResourceManager.ResourceExists(PackageId, ResourcePath + ".html"))
-            console.log(TypeWriter.ResourceManager.ResourceExists(PackageId, ResourcePath + "/index.html"))
+            //console.log(ResourcePath)
+            //console.log(ResourcePath + ".html")
+            //console.log(ResourcePath + "/index.html")
+            //console.log(TypeWriter.ResourceManager.ResourceExists(PackageId, ResourcePath))
+            //console.log(TypeWriter.ResourceManager.ResourceExists(PackageId, ResourcePath + ".html"))
+            //console.log(TypeWriter.ResourceManager.ResourceExists(PackageId, ResourcePath + "/index.html"))
             if (TypeWriter.ResourceManager.ResourceExists(PackageId, ResourcePath)) {
                 Response.header('Content-Type', Express.static.mime.lookup(ResourcePath));
                 return Response.send(TypeWriter.ResourceManager.GetRaw(PackageId, ResourcePath))
