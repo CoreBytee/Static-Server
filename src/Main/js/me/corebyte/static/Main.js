@@ -1,6 +1,7 @@
 const Express = require('express');
 
-module.exports = function (Port, PackageId, ResourcePrefix="", Backup) {
+module.exports = function (Port, PackageId, ResourcePrefix, Backup) {
+    if (!ResourcePrefix) {ResourcePrefix = ""}
     const App = Express();
     const Server = App.listen(Port);
     App.set('etag', false)
@@ -18,10 +19,16 @@ module.exports = function (Port, PackageId, ResourcePrefix="", Backup) {
             }
             console.log('Request: ' + Request.url);
             var ResourcePath = [...ResourcePrefix.split("/"), ...Request.path.split("/")].join("/").replaceAll("//", "/")
+            console.log(ResourcePath)
             if (ResourcePath.endsWith("/")) {
                 ResourcePath = ResourcePath.substring(0, ResourcePath.length - 1)
             }
+            if (!ResourcePath.startsWith("/")) {
+                ResourcePath = "/" + ResourcePath
+            }
             console.log(ResourcePath)
+            console.log(ResourcePath + ".html")
+            console.log(ResourcePath + "/index.html")
             console.log(TypeWriter.ResourceManager.ResourceExists(PackageId, ResourcePath))
             console.log(TypeWriter.ResourceManager.ResourceExists(PackageId, ResourcePath + ".html"))
             console.log(TypeWriter.ResourceManager.ResourceExists(PackageId, ResourcePath + "/index.html"))

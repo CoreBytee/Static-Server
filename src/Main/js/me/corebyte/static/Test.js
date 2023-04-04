@@ -1,1 +1,1 @@
-Import("me.corebyte.static")(8080, "Static")
+Import("me.corebyte.static")(8080, "Static", "a")
