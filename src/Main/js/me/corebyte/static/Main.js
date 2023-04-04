@@ -25,10 +25,13 @@ module.exports = function (Port, PackageId, ResourcePrefix, Backup) {
                 ResourcePath = "/" + ResourcePath
             }
             //console.log(ResourcePath)
-            //console.log(ResourcePath + ".html")
-            //console.log(ResourcePath + "/index.html")
+            //console.log(Express.mime.lookup(ResourcePath))
             //console.log(TypeWriter.ResourceManager.ResourceExists(PackageId, ResourcePath))
+            //console.log(ResourcePath + ".html")
+            //console.log(Express.static.mime.lookup(ResourcePath + ".html"))
             //console.log(TypeWriter.ResourceManager.ResourceExists(PackageId, ResourcePath + ".html"))
+            //console.log(ResourcePath + "/index.html")
+            //console.log(Express.static.mime.lookup(ResourcePath + "/index.html"))
             //console.log(TypeWriter.ResourceManager.ResourceExists(PackageId, ResourcePath + "/index.html"))
             if (TypeWriter.ResourceManager.ResourceExists(PackageId, ResourcePath)) {
                 Response.header('Content-Type', Express.static.mime.lookup(ResourcePath));
