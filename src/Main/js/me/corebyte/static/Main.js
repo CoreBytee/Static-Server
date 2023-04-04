@@ -33,12 +33,15 @@ module.exports = function (Port, PackageId, ResourcePrefix, Backup) {
             console.log(TypeWriter.ResourceManager.ResourceExists(PackageId, ResourcePath + ".html"))
             console.log(TypeWriter.ResourceManager.ResourceExists(PackageId, ResourcePath + "/index.html"))
             if (TypeWriter.ResourceManager.ResourceExists(PackageId, ResourcePath)) {
+                Response.header('Content-Type', Express.static.mime.lookup(ResourcePath));
                 return Response.send(TypeWriter.ResourceManager.GetRaw(PackageId, ResourcePath))
             }
             if (TypeWriter.ResourceManager.ResourceExists(PackageId, ResourcePath + ".html")) {
+                Response.header('Content-Type', Express.static.mime.lookup(ResourcePath + ".html"));
                 return Response.send(TypeWriter.ResourceManager.GetRaw(PackageId, ResourcePath + ".html"))
             }
             if (TypeWriter.ResourceManager.ResourceExists(PackageId, ResourcePath + "/index.html")) {
+                Response.header('Content-Type', Express.static.mime.lookup(ResourcePath + "/index.html"));
                 return Response.send(TypeWriter.ResourceManager.GetRaw(PackageId, ResourcePath + "/index.html"))
             }
             if (Backup) {
