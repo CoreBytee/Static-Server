@@ -1,6 +1,6 @@
 const Express = require('express')
 
-module.exports = function (Port, PackageId, ResourcePrefix, Backup) {
+module.exports = function (Port, PackageId, ResourcePrefix, Backup, OnServe) {
     if (!ResourcePrefix) {ResourcePrefix = ""}
     const App = Express();
     const Server = App.listen(Port);
@@ -13,7 +13,7 @@ module.exports = function (Port, PackageId, ResourcePrefix, Backup) {
         }
     )
     App.use(
-        Import("me.corebyte.static.Middleware")(PackageId, ResourcePrefix, Backup)
+        Import("me.corebyte.static.Middleware")(PackageId, ResourcePrefix, Backup, OnServe)
     )
     return {
         Close: function () {

@@ -1,13 +1,11 @@
 const Express = require('express')
 
-console.log(Express)
-
 function MimeLookup(Path) {
     return Express.static.mime.lookup(Path)
 }
 
-module.exports = function(PackageId, ResourcePrefix, Backup) {
-    return function (Request, Response) {
+module.exports = function(PackageId, ResourcePrefix, Backup, OnServe) {
+    return async function (Request, Response) {
         if (Request.method != 'GET') {
             return Response.status(405).send('Method Not Allowed');
         }
@@ -18,27 +16,41 @@ module.exports = function(PackageId, ResourcePrefix, Backup) {
         if (!ResourcePath.startsWith("/")) {
             ResourcePath = "/" + ResourcePath
         }
-        console.log(ResourcePath)
-        console.log(MimeLookup(ResourcePath))
-        console.log(TypeWriter.ResourceManager.ResourceExists(PackageId, ResourcePath))
-        console.log(ResourcePath + ".html")
-        console.log(MimeLookup(ResourcePath + ".html"))
-        console.log(TypeWriter.ResourceManager.ResourceExists(PackageId, ResourcePath + ".html"))
-        console.log(ResourcePath + "/index.html")
-        console.log(MimeLookup(ResourcePath + "/index.html"))
-        console.log(TypeWriter.ResourceManager.ResourceExists(PackageId, ResourcePath + "/index.html"))
+
+        // console.log(ResourcePath)
+        // console.log(MimeLookup(ResourcePath))
+        // console.log(TypeWriter.ResourceManager.ResourceExists(PackageId, ResourcePath))
+        // console.log(ResourcePath + ".html")
+        // console.log(MimeLookup(ResourcePath + ".html"))
+        // console.log(TypeWriter.ResourceManager.ResourceExists(PackageId, ResourcePath + ".html"))
+        // console.log(ResourcePath + "/index.html")
+        // console.log(MimeLookup(ResourcePath + "/index.html"))
+        // console.log(TypeWriter.ResourceManager.ResourceExists(PackageId, ResourcePath + "/index.html"))
+
+        var Served = false
         if (TypeWriter.ResourceManager.ResourceExists(PackageId, ResourcePath)) {
             Response.header('Content-Type', MimeLookup(ResourcePath));
-            return Response.send(TypeWriter.ResourceManager.GetRaw(PackageId, ResourcePath))
+            Response.send(TypeWriter.ResourceManager.GetRaw(PackageId, ResourcePath))
+            Served = true
         }
         if (TypeWriter.ResourceManager.ResourceExists(PackageId, ResourcePath + ".html")) {
             Response.header('Content-Type', MimeLookup(ResourcePath + ".html"));
-            return Response.send(TypeWriter.ResourceManager.GetRaw(PackageId, ResourcePath + ".html"))
+            Response.send(TypeWriter.ResourceManager.GetRaw(PackageId, ResourcePath + ".html"))
+            Served = true
         }
         if (TypeWriter.ResourceManager.ResourceExists(PackageId, ResourcePath + "/index.html")) {
             Response.header('Content-Type', MimeLookup(ResourcePath + "/index.html"));
-            return Response.send(TypeWriter.ResourceManager.GetRaw(PackageId, ResourcePath + "/index.html"))
+            Response.send(TypeWriter.ResourceManager.GetRaw(PackageId, ResourcePath + "/index.html"))
+            Served = true
         }
+
+        if (Served) {
+            if (OnServe) {
+                OnServe(Request, Response)
+            }
+            return
+        }
+
         if (Backup) {
             const BackupResult = Backup(Request, Response);
             if (BackupResult) {
