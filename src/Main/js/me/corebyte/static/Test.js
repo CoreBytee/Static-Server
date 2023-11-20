@@ -1,1 +1,1 @@
-Import("me.corebyte.static")(8080, "Static", "")
+await Import("me.corebyte.static")(8080, "Static", "")
