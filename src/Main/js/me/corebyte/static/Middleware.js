@@ -4,7 +4,7 @@ function MimeLookup(Path) {
     return Express.static.mime.lookup(Path)
 }
 
-module.exports = function(PackageId, ResourcePrefix, Backup, OnServe) {
+module.exports = function(PackageId, ResourcePrefix) {
     return async function (Request, Response) {
         if (Request.method != 'GET') {
             return Response.status(405).send('Method Not Allowed');
@@ -30,33 +30,17 @@ module.exports = function(PackageId, ResourcePrefix, Backup, OnServe) {
         var Served = false
         if (TypeWriter.ResourceManager.ResourceExists(PackageId, ResourcePath)) {
             Response.header('Content-Type', MimeLookup(ResourcePath));
-            Response.send(TypeWriter.ResourceManager.GetRaw(PackageId, ResourcePath))
-            Served = true
+            return Response.send(TypeWriter.ResourceManager.GetRaw(PackageId, ResourcePath))
         }
         if (TypeWriter.ResourceManager.ResourceExists(PackageId, ResourcePath + ".html")) {
             Response.header('Content-Type', MimeLookup(ResourcePath + ".html"));
-            Response.send(TypeWriter.ResourceManager.GetRaw(PackageId, ResourcePath + ".html"))
-            Served = true
+            return Response.send(TypeWriter.ResourceManager.GetRaw(PackageId, ResourcePath + ".html"))
         }
         if (TypeWriter.ResourceManager.ResourceExists(PackageId, ResourcePath + "/index.html")) {
             Response.header('Content-Type', MimeLookup(ResourcePath + "/index.html"));
-            Response.send(TypeWriter.ResourceManager.GetRaw(PackageId, ResourcePath + "/index.html"))
-            Served = true
+            return Response.send(TypeWriter.ResourceManager.GetRaw(PackageId, ResourcePath + "/index.html"))
         }
 
-        if (Served) {
-            if (OnServe) {
-                OnServe(Request, Response)
-            }
-            return
-        }
-
-        if (Backup) {
-            const BackupResult = Backup(Request, Response);
-            if (BackupResult) {
-                return Response.send(BackupResult);
-            }
-        }
         return Response.status(404).send('Requested resource not found');
     }
 }
